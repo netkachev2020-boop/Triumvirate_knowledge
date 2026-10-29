@@ -96,11 +96,11 @@ def ask_local_ai(user_id, user_text):
 
 # --- API МЕТОДЫ MAX ---
 
-def send_message(chat_id, text, attachments=None):
-    """Отправка сообщения через API платформы МАКС с поддержкой вложений (кнопок)"""
+def send_message(chat_id, text, attachments=None, fmt="html"):
+    """Отправка сообщения через API платформы МАКС с HTML-разметкой и поддержкой вложений (кнопок)"""
     url = f"{BASE_URL}/messages"
     params = {"chat_id": chat_id}
-    payload = {"text": text}
+    payload = {"text": text, "format": fmt}
     
     if attachments:
         payload["attachments"] = attachments
@@ -136,7 +136,7 @@ def process_message(user_id, chat_id, user_text):
     # Меню выбора по команде /start или /help с кнопками
     if cmd in ["/start", "/help", "помощь", "меню", "старт"]:
         reply = (
-            "🏛️ Добро пожаловать в «Триумвират знаний»!\n\n"
+            "🏛️ <b>Добро пожаловать в «Триумвират знаний»!</b>\n\n"
             "Выбери наставника, нажав на кнопку ниже:"
         )
         
@@ -166,9 +166,9 @@ def process_message(user_id, chat_id, user_text):
         user_roles[user_id] = "socrates"
         user_histories[user_id] = []
         reply = (
-            "🏛️ Активирован режим: Сократ (Мудрый наставник)\n\n"
+            "🏛️ <b>Активирован режим: Сократ (Мудрый наставник)</b>\n\n"
             "🎓 Напиши, в каком ты классе и какую школьную тему или задачу разбираем? "
-            "*(Сюда можно прикрепить фото с условием задачи!)*"
+            "Сюда можно прикрепить фото с условием задачи!"
         )
         send_message(chat_id, reply)
         return
@@ -177,7 +177,7 @@ def process_message(user_id, chat_id, user_text):
         user_roles[user_id] = "analyst"
         user_histories[user_id] = []
         reply = (
-            "📊 Активирован режим: Аналитик (Мастер структуры)\n\n"
+            "📊 <b>Активирован режим: Аналитик (Мастер структуры)</b>\n\n"
             "🎓 Укажи класс и пришли текст или фото страницы параграфа, которую нужно сжать в тезисы."
         )
         send_message(chat_id, reply)
@@ -187,7 +187,7 @@ def process_message(user_id, chat_id, user_text):
         user_roles[user_id] = "examiner"
         user_histories[user_id] = []
         reply = (
-            "📝 Активирован режим: Проверяющий (Экзаменатор)\n\n"
+            "📝 <b>Активирован режим: Проверяющий (Экзаменатор)</b>\n\n"
             "🎓 В каком ты классе и по какой школьной теме подготовить мини-тест из 6 вопросов?"
         )
         send_message(chat_id, reply)
